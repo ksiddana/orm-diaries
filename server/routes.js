@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 const app = require('express').Router();
 var { Todo } = require('./db/models/todo');
 var { User } = require('./db/models/user');
+var { authenticate } = require('./middleware/authenticate');
 
 app.use(bodyParser.json());
 
@@ -35,8 +36,46 @@ app.post('/users', (req, res) => {
     // res.send(user)
   }).then((token) => {
     res.header('x-auth', token).send(user.toJSON())
-  }).catch((e) => res.status(400).send(e));
+  }).catch((e) => {
+    res.status(401).send(e)
+  });
 });
+
+
+/*
+app.get('/users/me', (req, res) => {
+  var token = req.header('x-auth');
+
+  User.findByToken(token).then((user) => {
+    if(!user){
+      return Promise.reject();
+    }
+    res.send(user);
+  }).catch(e => {
+    res.status(401).send();
+  });
+});
+*/
+
+var authenticate = (req, res, next) => {
+  var token = req.header('x-auth');
+
+  User.findByToken(token).then((user) => {
+    if(!user){
+      return Promise.reject();
+    }
+    req.user = user;
+    req.token = token;
+    next();
+  }).catch(e => {
+    res.status(401).send();
+  });
+}
+
+app.get('/users/me', authenticate, (req, res) => {
+  res.send(req.user);
+});
+
 
 app.get('*', (req, res, next) => {
   const routePath = path.join(__dirname + '..', '..', 'src/' + 'index.html');
