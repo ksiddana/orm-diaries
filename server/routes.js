@@ -1,9 +1,12 @@
 const _ = require('lodash');
 var bodyParser = require('body-parser');
+var bcrypt = require('bcryptjs');
+
 const app = require('express').Router();
 var { Todo } = require('./db/models/todo');
 var { User } = require('./db/models/user');
 var { authenticate } = require('./middleware/authenticate');
+
 
 app.use(bodyParser.json());
 
@@ -74,6 +77,19 @@ var authenticate = (req, res, next) => {
 
 app.get('/users/me', authenticate, (req, res) => {
   res.send(req.user);
+});
+
+// POST /users/login {email, password}
+app.post('/users/login', (req, res) => {
+  const body = _.pick(req.body, ['email', 'password']);
+
+  User.findByCredentials(body.email, body.password).then((user) => {
+    user.generateAuthToken().then((token) => {
+      res.header('x-auth', token).send(user.toJSON())
+    });
+  }).catch((e) => {
+    res.send(400).send(e);
+  });
 });
 
 
