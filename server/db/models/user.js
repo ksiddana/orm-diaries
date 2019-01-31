@@ -54,6 +54,18 @@ UserSchema.methods.generateAuthToken = function() {
   return user.save().then(() => { return token })
 };
 
+// we are using a mongoose method that matches an object call $pull. Look it up.
+UserSchema.methods.removeToken = function (token) {
+  var user = this;
+  return user.update({
+    $pull: {
+      tokens: { token }
+    }
+  });
+};
+
+// Every session the user gets a token and then the operations are done using a token
+// Then on loggin off, you delete the token
 UserSchema.statics.findByToken = function (token) {
   var User = this;
   var decoded;
@@ -92,7 +104,8 @@ UserSchema.statics.findByCredentials = function (email, password) {
 }
 
 
-// This are methods from the Mongoose documentation
+// This are methods from the Mongoose documentation allows you to perfom a method
+// before the save method. Like a middleware.
 // https://mongoosejs.com/docs/api.html#schema_Schema-pre
 UserSchema.pre('save', function (next) {
   var user = this;
