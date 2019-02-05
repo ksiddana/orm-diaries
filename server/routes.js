@@ -1,6 +1,7 @@
 const _ = require('lodash');
 var bodyParser = require('body-parser');
 var bcrypt = require('bcryptjs');
+var { ObjectID } = require('mongodb');
 
 const express = require('express')
 var { Todo } = require('./db/models/todo');
@@ -11,6 +12,7 @@ var app = express();
 
 app.use(bodyParser.json());
 
+// create a new todo for an authenticated user
 app.post('/todos', authenticate, (req, res) => {
   var todo = new Todo({
     text: req.body.text,
@@ -24,6 +26,7 @@ app.post('/todos', authenticate, (req, res) => {
   });
 });
 
+// GET all the todos for a authenticated user
 app.get('/todos', authenticate, (req, res) => {
   Todo.find({
     _creator: req.user._id
@@ -34,15 +37,18 @@ app.get('/todos', authenticate, (req, res) => {
   });
 });
 
-// GET /todos/1234
-app.get('/todos/:id', (req, res) => {
+// GET /todos/1234 specific todo item
+app.get('/todos/:id', authenticate, (req, res) => {
   const { id } = req.params;
 
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
 
-  Todo.findById(id).then(todo => {
+  Todo.findOne({
+    _id: id,
+    _creator: req.user._id
+  }).then(todo => {
     if (!todo) {
       return res.status(404).send();
     }
@@ -52,13 +58,17 @@ app.get('/todos/:id', (req, res) => {
   });
 });
 
-app.delete('/todos/:id', (req, res) => {
+
+app.delete('/todos/:id', authenticate, (req, res) => {
   const { id } = req.params;
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
 
-  Todo.findByIdAndRemove(id).then(todo => {
+  Todo.findOneAndRemove({
+    _id: id,
+    _creator: req.user._id
+  }).then(todo => {
     if (!todo) {
       return res.status(404).send();
     }
@@ -70,7 +80,7 @@ app.delete('/todos/:id', (req, res) => {
   });
 });
 
-app.patch('/todos/:id', (req, res) => {
+app.patch('/todos/:id', authenticate, (req, res) => {
   var id = req.params.id;
   var body = _.pick(req.body, ['text', 'completed']);
 
@@ -83,7 +93,7 @@ app.patch('/todos/:id', (req, res) => {
     body.completedAt = null;
   }
 
-  Todo.findByIdAndUpdate(id, { $set: body }, { new: true}).then(todo => {
+  Todo.findOneAndUpdate({ _id: id, _creator: req.user._id },  { $set: body },  { new: true }).then(todo => {
     if (!todo) {
       res.status(404).send('Not found id');
     }
@@ -160,9 +170,9 @@ app.delete('/users/me/token', authenticate, (req, res) => {
   });
 });
 
-app.get('*', (req, res, next) => {
-  const routePath = path.join(__dirname + '..', '..', 'src/' + 'index.html');
-  res.sendFile(routePath);
-});
+// app.get('*', (req, res, next) => {
+//   const routePath = path.join(__dirname + '..', '..', 'src/' + 'index.html');
+//   res.sendFile(routePath);
+// });
 
 module.exports = app;

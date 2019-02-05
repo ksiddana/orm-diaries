@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import guardian from './guardian/guardian';
 import cnn from './cnn/cnn';
-import techcrunch from './techcrunch/techcrunch';
+import user from './user';
+import todo from './todo';
 
 export default combineReducers({
-  guardian: guardian,
   cnn: cnn,
-  techcrunch: techcrunch
+  user,
+  todo
 });
