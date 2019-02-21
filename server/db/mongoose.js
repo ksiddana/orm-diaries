@@ -4,7 +4,13 @@ mongoose.Promise = global.Promise;
 
 
 if (process.env.NODE_ENV !== 'production') {
-  mongoose.connect('mongodb://localhost:27017/TodoApp');
+  mongoose.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Connected to DEV MongoDB");
+    }
+  });
 } else {
   mongoose.connect(MONGO_URI, (err, db) => {
     if (err) {

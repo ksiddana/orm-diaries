@@ -10,7 +10,7 @@
     "serve": "webpack-dev-server",
     "prod": "NODE_ENV=production npm run build && node server",
     "dev": "NODE_ENV=development nodemon server/index.js",
-    "start": "node server"
+    "start": "NODE_ENV=production node server"
   },
   "author": "",
   "license": "ISC",
