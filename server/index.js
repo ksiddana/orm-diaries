@@ -3,12 +3,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
-// const mysql = require('mysql');
-const config = require('../.config.json');
 const routes = require('./routes.js');
-const webpackMiddleware = require('webpack-dev-middleware');
-const webpack = require('webpack');
-const webpackConfig = require('../webpack.config.js');
 const mongoose = require('./db/mongoose');
 
 let connection;
@@ -16,6 +11,9 @@ let connection;
 app.use('/', routes);
 
 if (process.env.NODE_ENV !== 'production') {
+  const webpack = require('webpack');
+  const webpackMiddleware = require('webpack-dev-middleware');
+  const webpackConfig = require('../webpack.config.js');
   app.use(webpackMiddleware(webpack(webpackConfig)));
 
   app.listen(port);
