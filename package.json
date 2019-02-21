@@ -7,10 +7,10 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "NODE_ENV=production npm run clean && webpack -p",
-    "serve": "webpack-dev-server",
     "prod": "NODE_ENV=production npm run build && node server",
-    "dev": "NODE_ENV=development nodemon server/index.js",
-    "start": "NODE_ENV=production node server"
+    "start": "NODE_ENV=production npm run prod",
+    "serve": "webpack-dev-server",
+    "dev": "NODE_ENV=development nodemon server/index.js"
   },
   "author": "",
   "license": "ISC",
