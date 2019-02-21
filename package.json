@@ -8,9 +8,9 @@
     "clean": "rimraf dist",
     "build": "NODE_ENV=production npm run clean && webpack -p",
     "serve": "webpack-dev-server",
-    "prod": "NODE_ENV=development node server/index.js",
-    "dev": "nodemon server/index.js",
-    "start": "NODE_ENV=development node server/index.js"
+    "prod": "NODE_ENV=production npm run build && node server",
+    "dev": "NODE_ENV=development nodemon server/index.js",
+    "start": "node server"
   },
   "author": "",
   "license": "ISC",

@@ -53,17 +53,17 @@ if (process.env.NODE_ENV === 'production' && config.production.enable) {
   //   });
   // });
 }
+app.use('/', routes);
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(webpackMiddleware(webpack(webpackConfig)));
-  app.use('/', routes);
 
   app.listen(port);
   console.log('DEV ENV server running at http://localhost:' + port);
 
 }
 else {
-  const static_path = path.join(__dirname, 'dist');
+  const static_path = path.join(__dirname, '..', 'dist');
   app.use(express.static(static_path));
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
