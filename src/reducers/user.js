@@ -20,6 +20,13 @@ export default (state = initialState, action = {}) => {
         loggedIn: true
       };
 
+    case "LOGOUT_USER":
+      return {
+        ...state,
+        userId: '',
+        loggedIn: false
+      };
+
 
     default:
       return state;

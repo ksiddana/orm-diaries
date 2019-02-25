@@ -26,13 +26,12 @@ export const login = (payload) => dispatch => {
     if (response.status == 200) {
       cookies.set('auth', response.headers['x-auth'], { path: '/'});
       dispatch({ type: 'LOGIN_USER', payload: response.data.email })
-      dispatch(fetchTodoList());
     }
   })
   .catch();
 }
 
-const fetchTodoList = () => dispatch => {
+export const fetchTodoList = () => dispatch => {
   const url = '/todos'
   const auth = cookies.get('auth');
   const headers = {
@@ -42,4 +41,9 @@ const fetchTodoList = () => dispatch => {
   return axios.get(url, { headers }).then(response => {
     dispatch({ type: "FETCH_TODO_LIST", payload:  response.data.todos })
   })
+}
+
+export const logout = () => dispatch => {
+  dispatch({ type: "LOGOUT_USER" });
+  dispatch({ type: "DELETE_TODO_LIST" });
 }
