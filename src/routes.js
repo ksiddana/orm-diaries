@@ -1,23 +1,23 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect, Switch } from 'react-router-dom';
 import Login from './components/login/login';
 import SignUp from './components/signup/signup';
 import Header from './components/header/header';
+import Main from './components/main/main';
+import AuthorizedRoute from './authorizedRoutes';
 
-const Routes = () => {
+const Routes = (store) => {
   return (
-    <Router>
+      <Router>
       <div>
-        <ul>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/signup">Create a New Account</Link></li>
-        </ul>
-        <Route exact path='/' component={Header} />
-        <Route path='/login' component={Login} />
-        <Route path='/signup' component={SignUp} />
+        <Switch>
+          <Route path="/auth" component={Login} />
+          <AuthorizedRoute path="/app" component={Main} />
+          <Redirect to="/auth" />
+        </Switch>
       </div>
     </Router>
-  );
-};
+  )
+}
 
 export default Routes;

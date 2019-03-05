@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { login, logout } from '../../reducers/actions/user'
-import './login.css';
+import styles from './login.css';
 import Cookies from 'universal-cookie';
+
+console.log(styles);
 
 class Login extends Component {
   constructor(props) {
@@ -22,28 +24,30 @@ class Login extends Component {
   }
 
   handleLoginSubmit(e) {
+    const payload = {}
     const { history } = this.props;
     e.preventDefault();
-    const email = this.refs.login_email.value;
-    const password = this.refs.login_password.value;
-    this.props.login({ email, password });
-    history.push('/');
-
+    payload.email = this.refs.login_email.value;
+    payload.password = this.refs.login_password.value;
+    this.props.login(payload, history);
   }
 
   renderLoginForm() {
     return (
-      <form onSubmit={(e) => this.handleLoginSubmit(e)}>
-        <input type="text" placeholder="Enter email" ref="login_email"/>
-        <input type="text" placeholder="Enter password" ref="login_password"/>
-        <input type="submit" value="Login" />
-      </form>
-    )
+      <div className="login-form">
+        <div className="login-title">Welcome</div>
+        <form onSubmit={(e) => this.handleLoginSubmit(e)}>
+          <input type="text" placeholder="Enter email" ref="login_email" className="login-email"/>
+          <input type="text" placeholder="Enter password" ref="login_password" className="login-password"/>
+          <input type="submit" value="Login" />
+        </form>
+      </div>
+    );
   }
 
   render() {
     return (
-      <div className="header">
+      <div className="">
         {this.renderLoginForm()}
       </div>
     );

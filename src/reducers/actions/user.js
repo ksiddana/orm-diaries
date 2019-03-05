@@ -17,7 +17,7 @@ export const signUp = (payload) => dispatch => {
   .catch();
 }
 
-export const login = (payload) => dispatch => {
+export const login = (payload, history) => dispatch => {
   console.log(payload);
   let url = '/users/login';
 
@@ -26,6 +26,7 @@ export const login = (payload) => dispatch => {
     if (response.status == 200) {
       cookies.set('auth', response.headers['x-auth'], { path: '/'});
       dispatch({ type: 'LOGIN_USER', payload: response.data.email })
+      history.replace('/app');
     }
   })
   .catch();
