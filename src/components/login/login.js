@@ -37,9 +37,25 @@ class Login extends Component {
       <div className="login-form">
         <div className="login-title">Welcome</div>
         <form onSubmit={(e) => this.handleLoginSubmit(e)}>
-          <input type="text" placeholder="Enter email" ref="login_email" className="login-email"/>
-          <input type="text" placeholder="Enter password" ref="login_password" className="login-password"/>
-          <input type="submit" value="Login" />
+
+          <div className="wrapper-input">
+            <input type="text" placeholder="Enter email" ref="login_email" className="login-email"/>
+            <span className="focus-input"></span>
+          </div>
+
+          <div className="wrapper-input">
+            <input type="text" placeholder="Enter password" ref="login_password" className="login-password"/>
+            <span className="focus-input"></span>
+          </div>
+
+          <div className="login-button-container">
+            <div className="wrapper-loggin-button">
+              <div className="loggin-button-bgbtn">
+                <button className="login-button"><span>Login</span></button>
+              </div>
+            </div>
+          </div>
+
         </form>
       </div>
     );
