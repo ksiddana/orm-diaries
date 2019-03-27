@@ -49,11 +49,7 @@ class Login extends Component {
           </div>
 
           <div className="login-button-container">
-            <div className="wrapper-loggin-button">
-              <div className="loggin-button-bgbtn">
-                <button className="login-button"><span>Login</span></button>
-              </div>
-            </div>
+            <button className="btn btn-large btn-primary btn-block"><span>Login</span></button>
           </div>
 
         </form>
