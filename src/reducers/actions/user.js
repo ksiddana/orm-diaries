@@ -44,6 +44,20 @@ export const fetchTodoList = () => dispatch => {
   })
 }
 
+export const saveTask = (payload) => dispatch => {
+  console.log(payload);
+  const url = '/todos';
+  const auth = cookies.get('auth');
+  const headers = {
+    'Content-Type': 'application/json',
+    'x-auth': auth
+  }
+
+  return axios.post(url, payload, { headers }).then(response => {
+    dispatch({ type: "SAVE_TODO_ITEM", payload: response.data.todos })
+  })
+}
+
 export const logout = () => dispatch => {
   dispatch({ type: "LOGOUT_USER" });
   dispatch({ type: "DELETE_TODO_LIST" });

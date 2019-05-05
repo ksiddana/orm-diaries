@@ -9,6 +9,11 @@ export default (state = initialState, action = {}) => {
         ...state,
         todos: action.payload
       };
+    case "SAVE_TODO_ITEM":
+      return {
+        ...state,
+        todos: action.payload
+      }
     case "DELETE_TODO_LIST":
     return {
       ...state,

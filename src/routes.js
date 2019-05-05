@@ -12,6 +12,7 @@ const Routes = (store) => {
       <div>
         <Switch>
           <Route path="/auth" component={Login} />
+          {/* <Route path="/" component={Main} /> */}
           <AuthorizedRoute path="/app" component={Main} />
           <Redirect to="/auth" />
         </Switch>

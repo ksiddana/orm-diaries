@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { fetchTodoList } from '../../reducers/actions/user'
+
+import InputBox from '../input-box/input-box';
+import { fetchTodoList, saveTask } from '../../reducers/actions/user'
 import './main.css';
 
 class Main extends Component {
@@ -20,10 +22,16 @@ class Main extends Component {
   }
 
   renderTodoList() {
-    const { todos } = this.props;
+    const { todos, saveTask } = this.props;
     return (
       <div>
-        {todos.length > 0 && todos.map(todo => this.renderTodoItem(todo))}
+        {todos && todos.length > 0 && todos.map(todo => this.renderTodoItem(todo))}
+        <InputBox
+          name="new_task"
+          type="text"
+          placeholder="Enter new task ..."
+          handleSubmit={saveTask}
+        />
       </div>
     );
   }
@@ -32,16 +40,12 @@ class Main extends Component {
     const { loggedIn } = this.props;
     return (
       <div className="">
-        <div className="header-title">Todo Application</div>
-        {!loggedIn && <div>logged out</div>}
-        {loggedIn && this.renderTodoList()}
+        <div className="header-title">Simple Tasks</div>
+        {/* {!loggedIn && <div>logged out</div>} */}
+        {this.renderTodoList()}
       </div>
     );
   }
 };
 
-export default connect(state => ({
-  loggedIn: state.user.loggedIn,
-  todos: state.todo.todos,
-  userId: state.user.userId
-}),{ fetchTodoList })(Main);
+export default connect(state => ({}),{ fetchTodoList, saveTask })(Main);

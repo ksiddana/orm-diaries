@@ -1,0 +1,26 @@
+input {
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.2;
+  display: block;
+  width: 100%;
+  padding: 0 5px;
+  border: none;
+}
+
+.wrapper-input {
+  width: 100%;
+  postion: relative;
+  border-bottom: 2px solid #adadad;
+}
+
+.wrapper-input:hover {
+  border-bottom: 2px solid #4a77d4;
+  transition: all .4s;
+}
+
+.wrapper-input:active {
+  border-bottom: 2px solid #4a77d4;
+  transition: all .4s;
+}
