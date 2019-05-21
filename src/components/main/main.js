@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 
 import InputBox from '../input-box/input-box';
-import { fetchTodoList, saveTask } from '../../reducers/actions/user'
+import { fetchTodoList, saveTask, deleteTodoItem } from '../../reducers/actions/user'
 import './main.css';
 
 class Main extends Component {
@@ -15,9 +15,16 @@ class Main extends Component {
     this.props.fetchTodoList();
   }
 
+  deleteTodoItem(id) {
+    this.props.deleteTodoItem(id);
+  }
+
   renderTodoItem(todo) {
     return (
-      <div>{todo.text}</div>
+      <div key={todo._id} className="main-todo-item">
+        <div>{todo.text}</div>
+        <button onClick={() => this.deleteTodoItem(todo._id)}><i className="fas fa-trash-alt"></i></button>
+      </div>
     );
   }
 
@@ -48,4 +55,8 @@ class Main extends Component {
   }
 };
 
-export default connect(state => ({}),{ fetchTodoList, saveTask })(Main);
+export default connect(state => ({
+  loggedIn: state.user.loggedIn,
+  todos: state.todo.todos,
+  userId: state.user.userId
+}),{ fetchTodoList, saveTask, deleteTodoItem })(Main);

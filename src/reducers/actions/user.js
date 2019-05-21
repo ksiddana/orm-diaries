@@ -40,7 +40,7 @@ export const fetchTodoList = () => dispatch => {
     'x-auth': auth
   }
   return axios.get(url, { headers }).then(response => {
-    dispatch({ type: "FETCH_TODO_LIST", payload:  response.data.todos })
+    dispatch({ type: 'FETCH_TODO_LIST', payload:  response.data.todos })
   })
 }
 
@@ -53,12 +53,38 @@ export const saveTask = (payload) => dispatch => {
     'x-auth': auth
   }
 
-  return axios.post(url, payload, { headers }).then(response => {
-    dispatch({ type: "SAVE_TODO_ITEM", payload: response.data.todos })
-  })
+  return axios.post(url, payload, { headers })
+    .then(response => {
+      dispatch({ type: 'SAVE_TODO_ITEM' })
+    })
+    .then(response => {
+      axios.get(url, { headers }).then(response => {
+        dispatch({ type: 'FETCH_TODO_LIST', payload:  response.data.todos })
+      })
+    })
+}
+
+export const deleteTodoItem = (id) => dispatch => {
+  // console.log(payload);
+  const url = `/todos/${id}`;
+  const auth = cookies.get('auth');
+  const headers = {
+    'Content-Type': 'application/json',
+    'x-auth': auth
+  }
+
+  return axios.delete(url, { headers })
+    .then(response => {
+      dispatch({ type: 'DELETE_TODO_ITEM' })
+    })
+    .then(response => {
+      axios.get('/todos', { headers }).then(response => {
+        dispatch({ type: 'FETCH_TODO_LIST', payload:  response.data.todos })
+      })
+    })
 }
 
 export const logout = () => dispatch => {
-  dispatch({ type: "LOGOUT_USER" });
-  dispatch({ type: "DELETE_TODO_LIST" });
+  dispatch({ type: 'LOGOUT_USER' });
+  dispatch({ type: 'DELETE_TODO_LIST' });
 }

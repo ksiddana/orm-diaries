@@ -13,3 +13,7 @@ body {
   font-size: 20px;
   text-align: center;
 }
+
+.main-todo-item div {
+  display: inline-block
+}
