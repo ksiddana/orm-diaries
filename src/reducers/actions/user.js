@@ -32,7 +32,7 @@ export const login = (payload, history) => dispatch => {
   .catch();
 }
 
-export const fetchTodoList = () => dispatch => {
+export const fetchTodoTaskList = () => dispatch => {
   const url = '/todos'
   const auth = cookies.get('auth');
   const headers = {
@@ -44,7 +44,7 @@ export const fetchTodoList = () => dispatch => {
   })
 }
 
-export const saveTask = (payload) => dispatch => {
+export const createTask = (payload) => dispatch => {
   console.log(payload);
   const url = '/todos';
   const auth = cookies.get('auth');
@@ -55,7 +55,7 @@ export const saveTask = (payload) => dispatch => {
 
   return axios.post(url, payload, { headers })
     .then(response => {
-      dispatch({ type: 'SAVE_TODO_ITEM' })
+      dispatch({ type: 'CREATE_NEW_TODO_ITEM' })
     })
     .then(response => {
       axios.get(url, { headers }).then(response => {
@@ -64,7 +64,7 @@ export const saveTask = (payload) => dispatch => {
     })
 }
 
-export const deleteTodoItem = (id) => dispatch => {
+export const deleteTodoTask = (id) => dispatch => {
   // console.log(payload);
   const url = `/todos/${id}`;
   const auth = cookies.get('auth');
@@ -82,6 +82,19 @@ export const deleteTodoItem = (id) => dispatch => {
         dispatch({ type: 'FETCH_TODO_LIST', payload:  response.data.todos })
       })
     })
+}
+
+export const updateEditedTask = (payload) => dispatch => {
+  const { _id, text, completed } = payload.todo;
+  const newPayload = { text, completed };
+  const path = `/todos/${_id}`;
+  const auth = cookies.get('auth');
+  const headers = { 'x-auth': auth }
+
+  // return axios.put(url, { headers })
+  return axios.patch(path, newPayload, { headers }).then(response => {
+    dispatch({ type: 'UPDATE_TODO_ITEM', payload: response.data.todo })
+  })
 }
 
 export const logout = () => dispatch => {

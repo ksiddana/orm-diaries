@@ -1,5 +1,6 @@
 body {
   font-family: 'Roboto', sans-serif;
+  line-height: 1.2
 }
 
 .header {
@@ -14,6 +15,23 @@ body {
   text-align: center;
 }
 
+.main-todo-list {
+  padding: 0 5px;
+}
+
+.main-todo-item {
+  display: flex;
+  justify-content: space-between;
+  height: 45px;
+  align-items: center;
+  border: 1px solid dimgray;
+}
+
 .main-todo-item div {
-  display: inline-block
+  font-size: 16px;
+}
+
+.main-todo-item input {
+  padding: 0
+
 }

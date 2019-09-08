@@ -9,7 +9,12 @@ export default (state = initialState, action = {}) => {
         ...state,
         todos: action.payload
       };
-    case 'SAVE_TODO_ITEM':
+    case 'CREATE_NEW_TODO_ITEM':
+      return {
+        ...state,
+      }
+    case 'UPDATE_TODO_ITEM':
+      console.log("action.payload", action.payload);
       return {
         ...state,
       }
