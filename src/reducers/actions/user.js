@@ -26,7 +26,7 @@ export const login = (payload, history) => dispatch => {
     if (response.status == 200) {
       cookies.set('auth', response.headers['x-auth'], { path: '/'});
       dispatch({ type: 'LOGIN_USER', payload: response.data.email })
-      history.replace('/app');
+      history.replace('/');
     }
   })
   .catch();

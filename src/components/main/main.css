@@ -15,6 +15,10 @@ body {
   text-align: center;
 }
 
+.todo-container {
+  padding: 16px;
+}
+
 .main-todo-list {
   padding: 0 5px;
 }
@@ -22,9 +26,8 @@ body {
 .main-todo-item {
   display: flex;
   justify-content: space-between;
-  height: 45px;
+  height: 40px;
   align-items: center;
-  border: 1px solid dimgray;
 }
 
 .main-todo-item div {
@@ -32,6 +35,14 @@ body {
 }
 
 .main-todo-item input {
-  padding: 0
+  padding: 0;
+  padding-left: 8px;
+  height: 36px
+}
 
+.main-todo-item input[type=checkbox] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
 }

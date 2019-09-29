@@ -11,11 +11,12 @@ class Main extends Component {
 
     this.state = {
       showInput: false,
-      itemBeingEdited: { todo: { text: '', _id: '' } }
+      itemBeingEdited: { todo: { text: '', _id: '', completed: false } }
     }
     this.editTodoItem = this.editTodoItem.bind(this);
     this.updateTodoItem = this.updateTodoItem.bind(this);
     this.saveUpdatedTodoItem = this.saveUpdatedTodoItem.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
   componentDidMount() {
@@ -52,12 +53,28 @@ class Main extends Component {
     }
   }
 
+  handleCheckboxChange(event, todo) {
+    console.log(todo);
+    const { itemBeingEdited } = this.state;
+    this.setState({
+      itemBeingEdited: {
+        todo: {
+          ...itemBeingEdited.todo,
+          completed: event.target.checked
+        }
+      }
+    }, () => {
+      console.log(this.state.itemBeingEdited);
+    })
+  }
+
   renderTodoItem(todo) {
     const { itemBeingEdited } = this.state;
     // console.log("2. itemBeingEdited ", itemBeingEdited.todo.text);
     if (todo._id === itemBeingEdited.todo._id) {
       return (
         <div key={todo._id} className="main-todo-item">
+          <input type="checkbox" />
           {this.state.showInput && (
             <input
               value={itemBeingEdited.todo.text}
@@ -71,6 +88,7 @@ class Main extends Component {
     } else {
       return (
         <div key={todo._id} className="main-todo-item">
+          <input type="checkbox" onChange={(e) => this.handleCheckboxChange(e, todo)}/>
           <input readOnly value={todo.text} onClick={this.editTodoItem.bind(this, todo)} />
           <button onClick={() => this.deleteTodoItem(todo._id)}><i className="fas fa-trash-alt"></i></button>
         </div>
@@ -81,7 +99,7 @@ class Main extends Component {
   renderTodoList() {
     const { todos, createTask } = this.props;
     return (
-      <div>
+      <div className="todo-container">
         <div className="main-todo-list">
           {todos && todos.length > 0 && todos.map(todo => this.renderTodoItem(todo))}
         </div>
@@ -100,7 +118,6 @@ class Main extends Component {
     return (
       <div className="">
         <div className="header-title">Simple Tasks</div>
-        {/* {!loggedIn && <div>logged out</div>} */}
         {this.renderTodoList()}
       </div>
     );
